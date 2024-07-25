@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Main Quiz Menu</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+
+  .button-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+  }
+
+  .quiz-button {
+    padding: 20px;
+    font-size: 18px;
+    color: white;
+    background-color: #e25909;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .quiz-button:hover {
+    background-color: #a53a09;  
+    transform: scale(1.05);
+  }
+
+  .quiz-button:active {
+    background-color: #c77a07;
+    transform: scale(1);
+  }
+</style>
+</head>
+<body>
+  <div class="button-container">
+    <a href="1.Legi/quiz1.html" class="quiz-button">Legislatie</a>
+    <a href="2.Performante umane/quiz2.html" class="quiz-button">Performante umane</a>
+    <a href="3.Meteo/quiz3.html" class="quiz-button">Meteo</a>
+    <a href="4.Navi/quiz4.html" class="quiz-button">Navigatie</a>
+    <a href="5.Radio/quiz5.html" class="quiz-button">Radio</a>
+    <a href="6.Cunoasterea/quiz6.html" class="quiz-button">Cunnoasterea aeronavei</a>
+    <a href="7.Performante de zbor/quiz7.html" class="quiz-button">Performante de zbor</a>
+    <a href="8.Proceduri operationale/quiz8.html" class="quiz-button">Proceduri operationale</a>
+    <a href="9.Principii de zbor/quiz9.html" class="quiz-button">Principii de zbor</a>
+  </div>
+</body>
+</html>

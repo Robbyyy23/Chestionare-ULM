@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legislatie</title>
+<style>
+  /* Add your CSS styles here */
+/* This is just a basic example */
+
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Style for question container */
+.question-container {
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+/* Style for answer container */
+.answer-container {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* Style for horizontal line */
+hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+/* Style for answer options */
+.answer-option {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Style for selected answer */
+.selected {
+  background-color: lightblue;
+}
+
+/* Style for correct answer */
+.correct {
+  background-color: lightgreen;
+}
+
+/* Style for incorrect answer */
+.incorrect {
+  background-color: lightcoral;
+}
+.quiz-container h2 {
+  display: inline-block; 
+}
+/* Style for buttons */
+button {
+    padding: 15px; /* Increased padding for bigger buttons */
+    font-size: 20px; /* Increased font size for bigger buttons */
+    cursor: pointer;
+    margin: 10px 10px 10px 0px;
+  }
+
+</style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2><span id="question-counter"></span></h2>
+    <div class="question-container" id="question"></div>
+    <hr> 
+    <div class="answer-container" id="answers"></div>
+    <button onclick="submitAnswer()">Submit</button>
+    <button onclick="nextQuestion()" id="nextBtn" disabled>Next</button>
+  </div>
+  <div id="incorrect-questions"></div> 
+
+<script src="script1.js"></script>
+</body>
+</html>
