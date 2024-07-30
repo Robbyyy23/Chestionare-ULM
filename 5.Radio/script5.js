@@ -734,6 +734,7 @@ const quizData=[
       }
 ];
 
+
 function shuffleAnswers(question) {
   const answersArray = Object.entries(question.answers); // Convert answers object to array of [key, value] pairs
   for (let i = answersArray.length - 1; i > 0; i--) {
@@ -785,6 +786,9 @@ function displayQuestion(index) {
 
     // Trigger click event on radio button when the answer div is clicked
     answerDiv.addEventListener('click', function () {
+      if(document.getElementById('submitBtn').disabled){
+        return;
+      }
       input.checked = true;
       // Remove "selected" class from all answer divs
       const allAnswerDivs = document.querySelectorAll('.answer-option');
@@ -825,6 +829,11 @@ function submitAnswer() {
     incorrectQuestions.push(currentQuestion); // Store incorrect question
   }
 
+  document.getElementById('submitBtn').disabled = true;
+  document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.disabled = true;
+  });
+  
   // Enable the Next button after submitting an answer
   enableNextButton();
   displayResults();
@@ -843,6 +852,7 @@ function nextQuestion() {
   currentIndex++;
   if (currentIndex < quizData.length) {
     displayQuestion(currentIndex);
+    document.getElementById('submitBtn').disabled = false;
     // Disable the Next button until the next question is answered
     document.getElementById('nextBtn').disabled = true;
     displayQuestionCounter(currentIndex);

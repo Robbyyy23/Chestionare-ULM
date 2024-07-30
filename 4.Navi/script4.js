@@ -849,151 +849,161 @@ const quizData=[
     }
 ];
 
-  function shuffleAnswers(question) {
-    const answersArray = Object.entries(question.answers); // Convert answers object to array of [key, value] pairs
-    for (let i = answersArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [answersArray[i], answersArray[j]] = [answersArray[j], answersArray[i]];
-    }
-    // Convert shuffled array back to object
-    const shuffledAnswers = {};
-    answersArray.forEach(([key, value]) => {
-      shuffledAnswers[key] = value;
-    });
-    return shuffledAnswers;
+
+function shuffleAnswers(question) {
+  const answersArray = Object.entries(question.answers); // Convert answers object to array of [key, value] pairs
+  for (let i = answersArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [answersArray[i], answersArray[j]] = [answersArray[j], answersArray[i]];
   }
-  
-  let currentIndex = 0; // Start with the first question
-  const incorrectQuestions = []; // Array to store incorrect questions
-  let correctCount = 0; // Counter for correct answers
-  let incorrectCount = 0;
-  
-  function displayQuestionCounter(index) {
-    const questionCounter = document.getElementById('question-counter');
-    questionCounter.textContent = `Question ${index + 1} of ${quizData.length}`;
-  }
-  
-  displayQuestion(currentIndex);
-  
-  function displayQuestion(index) {
-    displayQuestionCounter(index); // Update question counter
-    const questionElement = document.getElementById('question');
-    const answersElement = document.getElementById('answers');
-    const question = quizData[index];
-    questionElement.textContent = question.question;
-  
-    answersElement.innerHTML = ''; // Clear previous answers
-  
-    const shuffledAnswers = shuffleAnswers(question);
-    for (const option in shuffledAnswers) {
-      const label = document.createElement('label');
-      const input = document.createElement('input');
-      const answerDiv = document.createElement('div');
-      input.type = 'radio';
-      input.name = 'answer';
-      input.value = option;
-      label.textContent = question.answers[option];
-      answerDiv.classList.add('answer-option'); // Add class to answer div
-      answerDiv.appendChild(input);
-      answerDiv.appendChild(label);
-      answersElement.appendChild(answerDiv);
-  
-      // Trigger click event on radio button when the answer div is clicked
-      answerDiv.addEventListener('click', function () {
-        input.checked = true;
-        // Remove "selected" class from all answer divs
-        const allAnswerDivs = document.querySelectorAll('.answer-option');
-        allAnswerDivs.forEach(div => {
-          div.classList.remove('selected');
-        });
-        // Add "selected" class to clicked answer div
-        answerDiv.classList.add('selected');
-      });
-    }
-  }
-  
-  // Function to enable the Next button when a radio button is selected
-  function enableNextButton() {
-    document.getElementById('nextBtn').disabled = false;
-  }
-  
-  // Function to check the selected answer
-  function submitAnswer() {
-    const selectedAnswer = document.querySelector('input[name="answer"]:checked');
-  
-    if (!selectedAnswer) {
-      alert("Please select an answer");
-      return;
-    }
-  
-    const currentQuestion = quizData[currentIndex];
-    const correctAnswer = currentQuestion.correctAnswer;
-  
-    if (selectedAnswer.value === correctAnswer) {
-      currentQuestion.answeredCorrectly = true;
-      correctCount++; // Increment correct answer counter
-      selectedAnswer.parentElement.classList.add('correct'); // Apply correct class to selected answer
-    } else {
-      selectedAnswer.parentElement.classList.add('incorrect'); // Apply incorrect class to selected answer
-      document.querySelector('input[value="' + correctAnswer + '"]').parentElement.classList.add('correct'); // Highlight correct answer
-      incorrectCount++;
-      incorrectQuestions.push(currentQuestion); // Store incorrect question
-    }
-  
-    // Enable the Next button after submitting an answer
-    enableNextButton();
-    displayResults();
-  }
-  
-  // Function to move to the next question
-  function nextQuestion() {
-    // Remove all answer classes
-    const answerDivs = document.querySelectorAll('.answer-option');
-    answerDivs.forEach(answerDiv => {
-      answerDiv.classList.remove('correct');
-      answerDiv.classList.remove('incorrect');
-    });
-  
-    // Move to the next question
-    currentIndex++;
-    if (currentIndex < quizData.length) {
-      displayQuestion(currentIndex);
-      // Disable the Next button until the next question is answered
-      document.getElementById('nextBtn').disabled = true;
-      displayQuestionCounter(currentIndex);
-      
-    } else {
-      alert("Quiz completed!");
-    }
-  }
-  
-  // Function to display the results
-  function displayResults() {
-    const resultContainer = document.getElementById('incorrect-questions');
-  
-    resultContainer.innerHTML = `
-      <h1>Quiz Results</h1>
-      <h2>Correct Answers: ${correctCount}</h2>
-      <h2>Incorrect Answers: ${incorrectCount}</h2>
-      <h3>Questions you got wrong:</h3>
-    `;
-  
-    incorrectQuestions.forEach(question => {
-      const questionElement = document.createElement('div');
-      questionElement.classList.add('incorrect-question');
-      questionElement.innerHTML = `<br><h3>${question.question}</h3>`;
-      
-      const answersElement = document.createElement('div');
-      for (const [key, value] of Object.entries(question.answers)) {
-        const answerElement = document.createElement('p');
-        answerElement.textContent = `${key}: ${value}`;
-        if (key === question.correctAnswer) {
-          answerElement.style.fontWeight = 'bold'; // Highlight correct answer
-        }
-        answersElement.appendChild(answerElement);
+  // Convert shuffled array back to object
+  const shuffledAnswers = {};
+  answersArray.forEach(([key, value]) => {
+    shuffledAnswers[key] = value;
+  });
+  return shuffledAnswers;
+}
+
+let currentIndex = 0; // Start with the first question
+const incorrectQuestions = []; // Array to store incorrect questions
+let correctCount = 0; // Counter for correct answers
+let incorrectCount = 0;
+
+function displayQuestionCounter(index) {
+  const questionCounter = document.getElementById('question-counter');
+  questionCounter.textContent = `Question ${index + 1} of ${quizData.length}`;
+}
+
+displayQuestion(currentIndex);
+
+function displayQuestion(index) {
+  displayQuestionCounter(index); // Update question counter
+  const questionElement = document.getElementById('question');
+  const answersElement = document.getElementById('answers');
+  const question = quizData[index];
+  questionElement.textContent = question.question;
+
+  answersElement.innerHTML = ''; // Clear previous answers
+
+  const shuffledAnswers = shuffleAnswers(question);
+  for (const option in shuffledAnswers) {
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    const answerDiv = document.createElement('div');
+    input.type = 'radio';
+    input.name = 'answer';
+    input.value = option;
+    label.textContent = question.answers[option];
+    answerDiv.classList.add('answer-option'); // Add class to answer div
+    answerDiv.appendChild(input);
+    answerDiv.appendChild(label);
+    answersElement.appendChild(answerDiv);
+
+    // Trigger click event on radio button when the answer div is clicked
+    answerDiv.addEventListener('click', function () {
+      if(document.getElementById('submitBtn').disabled){
+        return;
       }
-      
-      questionElement.appendChild(answersElement);
-      resultContainer.appendChild(questionElement);
+      input.checked = true;
+      // Remove "selected" class from all answer divs
+      const allAnswerDivs = document.querySelectorAll('.answer-option');
+      allAnswerDivs.forEach(div => {
+        div.classList.remove('selected');
+      });
+      // Add "selected" class to clicked answer div
+      answerDiv.classList.add('selected');
     });
   }
+}
+
+// Function to enable the Next button when a radio button is selected
+function enableNextButton() {
+  document.getElementById('nextBtn').disabled = false;
+}
+
+// Function to check the selected answer
+function submitAnswer() {
+  const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const currentQuestion = quizData[currentIndex];
+  const correctAnswer = currentQuestion.correctAnswer;
+
+  if (selectedAnswer.value === correctAnswer) {
+    currentQuestion.answeredCorrectly = true;
+    correctCount++; // Increment correct answer counter
+    selectedAnswer.parentElement.classList.add('correct'); // Apply correct class to selected answer
+  } else {
+    selectedAnswer.parentElement.classList.add('incorrect'); // Apply incorrect class to selected answer
+    document.querySelector('input[value="' + correctAnswer + '"]').parentElement.classList.add('correct'); // Highlight correct answer
+    incorrectCount++;
+    incorrectQuestions.push(currentQuestion); // Store incorrect question
+  }
+
+  document.getElementById('submitBtn').disabled = true;
+  document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.disabled = true;
+  });
+  
+  // Enable the Next button after submitting an answer
+  enableNextButton();
+  displayResults();
+}
+
+// Function to move to the next question
+function nextQuestion() {
+  // Remove all answer classes
+  const answerDivs = document.querySelectorAll('.answer-option');
+  answerDivs.forEach(answerDiv => {
+    answerDiv.classList.remove('correct');
+    answerDiv.classList.remove('incorrect');
+  });
+
+  // Move to the next question
+  currentIndex++;
+  if (currentIndex < quizData.length) {
+    displayQuestion(currentIndex);
+    document.getElementById('submitBtn').disabled = false;
+    // Disable the Next button until the next question is answered
+    document.getElementById('nextBtn').disabled = true;
+    displayQuestionCounter(currentIndex);
+    
+  } else {
+    alert("Quiz completed!");
+  }
+}
+
+// Function to display the results
+function displayResults() {
+  const resultContainer = document.getElementById('incorrect-questions');
+
+  resultContainer.innerHTML = `
+    <h1>Quiz Results</h1>
+    <h2>Correct Answers: ${correctCount}</h2>
+    <h2>Incorrect Answers: ${incorrectCount}</h2>
+    <h3>Questions you got wrong:</h3>
+  `;
+
+  incorrectQuestions.forEach(question => {
+    const questionElement = document.createElement('div');
+    questionElement.classList.add('incorrect-question');
+    questionElement.innerHTML = `<br><h3>${question.question}</h3>`;
+    
+    const answersElement = document.createElement('div');
+    for (const [key, value] of Object.entries(question.answers)) {
+      const answerElement = document.createElement('p');
+      answerElement.textContent = `${key}: ${value}`;
+      if (key === question.correctAnswer) {
+        answerElement.style.fontWeight = 'bold'; // Highlight correct answer
+      }
+      answersElement.appendChild(answerElement);
+    }
+    
+    questionElement.appendChild(answersElement);
+    resultContainer.appendChild(questionElement);
+  });
+}

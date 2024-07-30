@@ -914,6 +914,9 @@ const quizData = [
   
       // Trigger click event on radio button when the answer div is clicked
       answerDiv.addEventListener('click', function () {
+        if(document.getElementById('submitBtn').disabled){
+          return;
+        }
         input.checked = true;
         // Remove "selected" class from all answer divs
         const allAnswerDivs = document.querySelectorAll('.answer-option');
@@ -953,7 +956,12 @@ const quizData = [
       incorrectCount++;
       incorrectQuestions.push(currentQuestion); // Store incorrect question
     }
-  
+
+    document.getElementById('submitBtn').disabled = true;
+    document.querySelectorAll('input[type="radio"]').forEach(input => {
+      input.disabled = true;
+    });
+    
     // Enable the Next button after submitting an answer
     enableNextButton();
     displayResults();
@@ -972,6 +980,7 @@ const quizData = [
     currentIndex++;
     if (currentIndex < quizData.length) {
       displayQuestion(currentIndex);
+      document.getElementById('submitBtn').disabled = false;
       // Disable the Next button until the next question is answered
       document.getElementById('nextBtn').disabled = true;
       displayQuestionCounter(currentIndex);
@@ -984,7 +993,7 @@ const quizData = [
   // Function to display the results
   function displayResults() {
     const resultContainer = document.getElementById('incorrect-questions');
-  
+
     resultContainer.innerHTML = `
       <h1>Quiz Results</h1>
       <h2>Correct Answers: ${correctCount}</h2>

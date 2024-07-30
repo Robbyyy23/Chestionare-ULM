@@ -1211,17 +1211,6 @@ correctAnswer: "c"
 },
 
 {
-  question: "136. Cine are obligaţia de a lua măsurile prevăzute de lege, până la obţinerea autorizării de reluare a zborului în cazul unei aeronave care a fost obligată să aterizeze pentru că a utilizat neautorizat spaţiul aerian al României?",
-  answers: {
-      a: "comandanţii bazelor aeriene, în cazul aterizării aeronavei pe un aerodrom sau aeroport utilizat în comun cu aviaţia civilă",
-      b: "directorii generali ai aeroporturilor civile, în cazul aterizării aeronavei pe unul dintre acestea",
-      c: "organele Ministerului Administraţiei şi Internelor, în cazul aterizării aeronavelor pe alte terenuri decât aerodromuri şi aeroporturi",
-      d: "la solicitarea comandanţilor bazelor aeriene sau a directorilor generali ai aeroporturilor civile organele Ministerului Administraţiei şi Internelor vor participa la îndeplinirea măsurilor prevăzute de lege"
-  },
-  correctAnswer: ["a","b","c"]
-},
-
-{
   question: "137. În scopul executării în siguranţă a zborurilor, pe timpul aplicării măsurilor prevăzute de legea nr. 257 din 22 mai 2001 privind modul de acţiune împotriva aeronavelor care utilizează neautorizat spaţiul aerian al României, Ministerul Apărării Naţionale, prin structurile de specialitate ale Forţelor Aeriene, poate:",
   answers: {
       a: "da dispoziţii de deviere sau chiar de interzicere temporară a tuturor zborurilor într-o anumită zonă sau în întregul spaţiu aerian al României",
@@ -1239,6 +1228,17 @@ correctAnswer: "c"
       c: "Hotărârea Guvernului nr. 912/2010 pentru aprobarea procedurii de autorizare a zborurilor în spaţiul aerian naţional, precum şi a condiţiilor în care decolarea şi aterizarea aeronavelor civile se pot efectua şi de pe/pe alte terenuri sau suprafeţe de apă decât aerodromurile certificate"
   },
   correctAnswer: "a"
+},
+
+{
+  question: "136. Cine are obligaţia de a lua măsurile prevăzute de lege, până la obţinerea autorizării de reluare a zborului în cazul unei aeronave care a fost obligată să aterizeze pentru că a utilizat neautorizat spaţiul aerian al României?",
+  answers: {
+      a: "comandanţii bazelor aeriene, în cazul aterizării aeronavei pe un aerodrom sau aeroport utilizat în comun cu aviaţia civilă",
+      b: "directorii generali ai aeroporturilor civile, în cazul aterizării aeronavei pe unul dintre acestea",
+      c: "organele Ministerului Administraţiei şi Internelor, în cazul aterizării aeronavelor pe alte terenuri decât aerodromuri şi aeroporturi",
+      d: "toate raspunsurile corecte"
+    },
+  correctAnswer: "d"
 }
   ];
   function shuffleAnswers(question) {
@@ -1292,6 +1292,9 @@ correctAnswer: "c"
   
       // Trigger click event on radio button when the answer div is clicked
       answerDiv.addEventListener('click', function () {
+        if(document.getElementById('submitBtn').disabled){
+          return;
+        }
         input.checked = true;
         // Remove "selected" class from all answer divs
         const allAnswerDivs = document.querySelectorAll('.answer-option');
@@ -1331,7 +1334,12 @@ correctAnswer: "c"
       incorrectCount++;
       incorrectQuestions.push(currentQuestion); // Store incorrect question
     }
-  
+
+    document.getElementById('submitBtn').disabled = true;
+    document.querySelectorAll('input[type="radio"]').forEach(input => {
+      input.disabled = true;
+    });
+    
     // Enable the Next button after submitting an answer
     enableNextButton();
     displayResults();
@@ -1350,6 +1358,7 @@ correctAnswer: "c"
     currentIndex++;
     if (currentIndex < quizData.length) {
       displayQuestion(currentIndex);
+      document.getElementById('submitBtn').disabled = false;
       // Disable the Next button until the next question is answered
       document.getElementById('nextBtn').disabled = true;
       displayQuestionCounter(currentIndex);
@@ -1362,7 +1371,7 @@ correctAnswer: "c"
   // Function to display the results
   function displayResults() {
     const resultContainer = document.getElementById('incorrect-questions');
-  
+
     resultContainer.innerHTML = `
       <h1>Quiz Results</h1>
       <h2>Correct Answers: ${correctCount}</h2>
